@@ -5,21 +5,34 @@ import environ
 
 env = environ.Env()
 environ.Env.read_env()
+ENVIRONMENT = env
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = [ ]
+
+# Cors and HOSTS
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS_DEV')
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST_DEV')
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEV')
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+# date
+DATE_INPUT_FORMATS = ('%d-%m-%Y', '%Y-%m-%d', '%m/%d/%Y')
+# evitar que ocupe localización
+USE_L10N = False
 
 
 # Application definition
@@ -48,6 +61,10 @@ THIRD_PARTY_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
+
+# CKeditor
+
+
 CKEDITOR_UPLOAD_PATH = "/media/"
 CKEDITOR_CONFIGS = {
     'default': {
@@ -68,7 +85,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'core.urls'  #ruta del core
+ROOT_URLCONF = 'core.urls'  # ruta del core
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+# Templates for Static Files NEXTJS
 
 TEMPLATES = [
     {
@@ -89,23 +110,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+# Databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cre_bd',
-        'USER': 'marco',
-        'PASSWORD': '123456',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    "default": env.db("DATABASE_URL", default="postgres:///ninerogues"),
 }
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 
 # Password validation
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -123,36 +136,48 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/3.1/topics/i18n/
+# JWT  config
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10080),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
+    "ROTATE_REFRESH_TOKEN": True,
+    "AUTH_TOKEN_CLASES": (
+        "rest_framework_simplejwt.tokens.AccessToken"
+    )
+}
 
+
+# LOCATION CONFIG
 LANGUAGE_CODE = 'es'
-TIME_ZONE = 'America/Lima'
+TIME_ZONE = 'America/Mexico_City'
+
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-STATIC_ROOT= os.path.join(BASE_DIR, 'static')
-
-STATIC_URL = '/static/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-
-
+# STATIC CONFIG
+STATIC_URL = '/statics/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build/static/')
+    os.path.join(BASE_DIR, 'statics')
 ]
+
+
+# MEDIA
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        
+
     ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -166,19 +191,18 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT', ),
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10080),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
-    'ROTATE_REFRESFH_TOKENS':True,
+    'ROTATE_REFRESFH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_TOKEN_CLASSES': (
         'rest_framework_simplejwt.tokens.AccessToken',
     )
 }
-
 
 
 DJOSER = {
@@ -205,12 +229,22 @@ DJOSER = {
 }
 
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:5173',  # Reemplaza con tu origen
-)
+# USER CUSTOM MODEL
+AUTH_USER_MODEL = "user.UserAccount"
 
-CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEV')
 
-AUTH_USER_MODEL="user.UserAccount"
+# EMAIL
+EMAIL_PRODUCTION = os.environ.get("EMAIL_PRODUCTION")
+
+if EMAIL_PRODUCTION:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')

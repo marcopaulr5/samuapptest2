@@ -38,7 +38,6 @@ USE_L10N = False
 # Application definition
 
 DJANGO_APPS = [
-    'apps.samumod',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,7 +46,8 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-PROJECT_APPS = ['apps.user']
+PROJECT_APPS = ['apps.user', 'apps.atencion', 'apps.diagnostico', 'apps.informante_atencion',
+                'apps.medico', 'apps.personal_medico', 'apps.ubicacion_atencion', 'apps.paciente']
 
 THIRD_PARTY_APPS = [
     'corsheaders',
@@ -177,14 +177,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
-
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 1000,
 }
-
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',

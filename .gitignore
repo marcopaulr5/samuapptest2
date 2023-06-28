@@ -263,7 +263,13 @@ poetry.toml
 # LSP config files
 pyrightconfig.json
 
-# End of https://www.toptal.com/developers/gitignore/api/python,django
+#  CUSTOM BACKEND 
+
+core/.env
+front/.env
+
+# FRONTEND 
+
 
 env/
 front/node_modules/

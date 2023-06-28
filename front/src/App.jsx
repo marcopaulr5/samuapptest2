@@ -3,6 +3,12 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+
+import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
+import 'primereact/resources/primereact.min.css'; //core css
+import 'primeicons/primeicons.css'; //icons
+import 'primeflex/primeflex.css'; // flex
+
 import Inicio from "./pages/Inicio";
 import Registro_paciente from "./pages/Registro_paciente";
 import Personal from "./pages/Personal";
@@ -16,6 +22,7 @@ import Login_registro from "./pages/Auth/Login_registro";
 import Activate from "./pages/Auth/Activate";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import ResetPasswordConfirm from "./pages/Auth/ResetPasswordConfirm";
+import Registro_personal  from "./pages/Registro_personal";
 
 function App() {
   return (
@@ -30,6 +37,7 @@ function App() {
           <Route path="/calendario" element={<Calendario />} />
           <Route path="/documentos" element={<Documentos />} />
           <Route path="/comentarios" element={<Comentarios />}/>
+          <Route path="/registro_personal" element={<Registro_personal />}/>
           {/* Display de Autenticacion de usuario */}
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/login_registro" element={<Login_registro/>}/>

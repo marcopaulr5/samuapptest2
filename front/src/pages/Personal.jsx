@@ -4,13 +4,13 @@ import { CheckIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import Layout from "../components/Layout";
 
+
 function Personal() {
   const [nombres, setNombres] = useState("");
   const [apellidos, setApellidos] = useState("");
   const [colegiatura, setColegiatura] = useState("");
   const [dni, setDni] = useState("");
   const [telefono, setTelefono] = useState("");
-
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
 

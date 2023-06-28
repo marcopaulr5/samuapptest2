@@ -2,6 +2,14 @@ import Layout from "../components/Layout";
 import axios from 'axios';
 
 function Registro_paciente() {
+
+  const [nombres, setNombres] = useState("");
+  const [apellidos, setApellidos] = useState("");
+  const [colegiatura, setColegiatura] = useState("");
+  const [dni, setDni] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState("");
   // Función para manejar el envío del formulario
 const handleSubmit = (event) => {
   event.preventDefault();

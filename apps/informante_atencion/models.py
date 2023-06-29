@@ -1,5 +1,6 @@
 from django.db import models
 
+from django.utils import timezone
 from apps.personal_medico.models import PersonalMedico
 
 # Create your models here.
@@ -18,3 +19,7 @@ class InformanteAtencion(models.Model):
     gen_infor = models.CharField(max_length=20, null=True, blank=True)
 
     id_personal = models.ForeignKey(PersonalMedico, on_delete=models.CASCADE)
+
+    activate = models.BooleanField(default=True, null=True, blank=True)
+    date_joined = models.DateTimeField(default=timezone.now)
+    date_updated = models.DateTimeField(null=True, default=None)

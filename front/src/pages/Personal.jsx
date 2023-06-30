@@ -64,22 +64,26 @@ function Personal() {
           />
         </label>
         <br />
-        <label>
+        <label className="block text-sm font-medium text-gray-700"> 
           Apellidos:
-          <input type="text" onChange={(e) => setApellidos(e.target.value)} />
+          <input type="text" onChange={(e) => setApellidos(e.target.value)} 
+          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
         </label>
         <br />
-        <label>
+        <label className="block text-sm font-medium text-gray-700">
           N° de colegiatura:
-          <input type="text" onChange={(e) => setColegiatura(e.target.value)} />
+          <input type="text" onChange={(e) => setColegiatura(e.target.value)} 
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      />
         </label>
         <br />
-        <label>
+        <label className="block text-sm font-medium text-gray-700">
           DNI:
-          <input type="text" onChange={(e) => setDni(e.target.value)} />
+          <input type="text" onChange={(e) => setDni(e.target.value)} 
+          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
         </label>
         <br />
-        <label>
+        <label className="block text-sm font-medium text-gray-700">
           Teléfono:
           <input type="text" onChange={(e) => setTelefono(e.target.value)} />
         </label>

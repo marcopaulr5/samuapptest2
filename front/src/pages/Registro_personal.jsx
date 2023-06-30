@@ -1,97 +1,76 @@
-import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
-import Layout from "../components/Layout";
-import React, { useState } from "react";
-import { InputText } from "primereact/inputtext";
+import React from 'react';
+import { useFormik } from 'formik';
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
 
-const SignupSchema = Yup.object().shape({
-  nombres: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  apellidos: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  genero: Yup.string().required("Required"),
-  dni: Yup.string().required("Required"),
-  age: Yup.number()
-    .typeError("Debe ser un número")
-    .integer("Debe ser un número entero")
-    .required("Requerido"),
-  // Agrega validaciones para los demás campos del modelo Paciente
+import * as Yup from 'yup';
+import Layout from '../components/Layout'
+
+const validationSchema = Yup.object().shape({
+  nombres: Yup.string().required('Nombre es requerido'),
+  apellidos: Yup.string().required('Apellido es requerido'),
+  genero: Yup.string().required('Género es requerido'),
+  fechaNacimiento: Yup.date().required('Fecha de nacimiento es requerida'),
 });
 
-export default function Registro_personal() {
-  const [value, setValue] = useState("");
+
+function Registro_personal() {
+  const initialValues = {
+    nombres: '',
+    apellidos: '',
+    genero: '',
+    fechaNacimiento: null,
+  };
+
+  const onSubmit = (values) => {
+    // Realiza la lógica de envío del formulario aquí (puede ser una llamada a la API de Django)
+
+    // Muestra una notificación de éxito utilizando PrimeReact Toast
+    toast.current.show({
+      severity: 'success',
+      summary: 'Formulario enviado',
+      detail: '¡El formulario se ha enviado correctamente!',
+      life: 3000,
+    });
+  };
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit,
+  });
+
   return (
-    <Layout>
-      <div>
-        <h1>Registro de Paciente</h1>
-        <Formik
-          initialValues={{
-            nombres: "",
-            apellidos: "",
-            genero: "",
-            dni: "",
-            // Incluye los demás campos del modelo Paciente aquí
-          }}
-          validationSchema={SignupSchema}
-          onSubmit={(values) => {
-            // Realiza la acción deseada al enviar el formulario
-            console.log(values);
-          }}
-        >
-          {({ errors, touched }) => (
-            <Form>
-              <div>
-                <label htmlFor="nombres">Nombres</label>
-                <Field type="text" name="nombres" />
-                {errors.nombres && touched.nombres ? (
-                  <div>{errors.nombres}</div>
-                ) : null}
-              </div>
+     <Layout>
 
-              <div>
-                <label htmlFor="apellidos">Apellidos</label>
-                <Field type="text" name="apellidos" />
-                {errors.apellidos && touched.apellidos ? (
-                  <div>{errors.apellidos}</div>
-                ) : null}
-              </div>
-
-              <div>
-                <label htmlFor="genero">Género</label>
-                <Field as="select" name="genero">
-                  <option value="">Seleccione</option>
-                  <option value="Masculino">Masculino</option>
-                  <option value="Femenino">Femenino</option>
-                  <option value="Otro">Otro</option>
-                </Field>
-                {errors.genero && touched.genero ? (
-                  <div>{errors.genero}</div>
-                ) : null}
-              </div>
-
-              <div>
-              <span className="p-float-label">
-              <InputText keyfilter="int" placeholder="Integers" />
-                <label htmlFor="dni">DNI</label>
-              </span>
-              </div>
-
-              <div>
-                <label htmlFor="dni">DNI</label>
-                <Field type="text" name="dni" />
-                {errors.dni && touched.dni ? <div>{errors.dni}</div> : null}
-              </div>
-
-              {/* Agrega los demás campos del modelo Paciente siguiendo el mismo patrón */}
-              <button type="submit">Submit</button>
-            </Form>
+     
+    <div>
+      <h1>Formulario de Paciente</h1>
+      <form onSubmit={formik.handleSubmit}>
+        <div>
+          <label htmlFor="nombres">Nombres</label>
+          <InputText
+            id="nombres"
+            name="nombres"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.nombres}
+          />
+          {formik.touched.nombres && formik.errors.nombres && (
+            <div>{formik.errors.nombres}</div>
           )}
-        </Formik>
-      </div>
+        </div>
+
+        {/* Repite el mismo patrón para los demás campos del formulario */}
+        {/* ... */}
+
+        <Button type="submit" label="Enviar" />
+
+      
+      </form>
+    </div>
     </Layout>
-  );
-}
+  )
+};
+
+export default Registro_personal;

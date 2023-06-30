@@ -47,7 +47,7 @@ DJANGO_APPS = [
 ]
 
 PROJECT_APPS = ['apps.user', 'apps.atencion', 'apps.diagnostico', 'apps.informante_atencion',
-                'apps.medico', 'apps.personal_medico', 'apps.ubicacion_atencion', 'apps.paciente']
+                'apps.medico', 'apps.personal_medico',  'apps.paciente']
 
 THIRD_PARTY_APPS = [
     'corsheaders',

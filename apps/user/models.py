@@ -27,17 +27,20 @@ class UserAccountManager(BaseUserManager):
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
+    nickname = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_registered_with_google = models.BooleanField(
+        default=False, blank=True, null=True)
     desactivate_account = models.BooleanField(default=False)
 
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'nickname']
 
     def get_full_name(self):
         return self.first_name + ' ' + self.last_name
@@ -51,9 +54,9 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
-    location = models.CharField(max_length=100, blank=True)
+    location = models.CharField(max_length=100, blank=True, null=True)
     birthdate = models.DateField(blank=True, null=True)
-    phone_number = models.CharField(max_length=20, blank=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
 
 
 class Settings(models.Model):

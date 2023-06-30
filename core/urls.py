@@ -11,5 +11,9 @@ urlpatterns = [
     path('auth/', include('djoser.social.urls')),
     path('admin/', admin.site.urls),
     path('api/', include('apps.medico.urls')),
+    path('api/', include('apps.paciente.urls')),
+    path('api/', include('apps.personal_medico.urls')),
+    path('api/', include('apps.diagnostico.urls')),
+    path('api/', include('apps.informante_atencion.urls')),
 
 ]

@@ -29,9 +29,12 @@ const RegistroPacienteForm = () => {
     telefono_paciente: Yup.string().required('Este campo es requerido'),
   });
 
+    // Función para manejar el envío del formulario
   const handleSubmit = (values) => {
+    // Si la opción "Hora actual" está marcada, asignamos la hora actual al campo "hora"
+    // Aquí puedes agregar la lógica para enviar los datos del formulario
     console.log(values);
-  };
+  }
 
   return (
     <Layout>

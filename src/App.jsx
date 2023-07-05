@@ -16,16 +16,6 @@ import Login from "./pages/Auth/Login";
 import Login_registro from "./pages/Auth/Login_registro";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import ResetPasswordConfirm from "./pages/Auth/ResetPasswordConfirm";
-
-import Calendario from "./pages/Calendario";
-import Comentarios from "./pages/Comentarios";
-import Documentos from "./pages/Documentos";
-import Error from "./pages/Error";
-import Inicio from "./pages/Inicio";
-import Personal from "./pages/Personal";
-import Registro_paciente from "./pages/Registro_paciente";
-import Reportes from "./pages/Reportes";
-
 import Registro_personal  from "./pages/Registro_personal";
 import MedicosForm from "./pages/Registro_Medicos";
 import RegistroUbicacionForm from "./pages/Registro_Ubicacion";

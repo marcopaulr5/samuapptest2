@@ -53,13 +53,10 @@ function App() {
 
           <Route path="/comentarios" element={<Comentarios />}/>
           <Route path="/registro_personal" element={<Registro_personal />}/>
-<<<<<<< HEAD
+
           <Route path="/registro_medicos" element={<MedicosForm />}/>
           <Route path="/registro_ubicacion" element={<RegistroUbicacionForm />}/>
           <Route path="/registro_llamada" element={<RegistroLlamadaForm />}/>
-=======
-
->>>>>>> 3850f4b58712ab480032e4143679a76055256a34
           <Route path="/comentarios" element={<Comentarios />} />
           {/* Display de Autenticacion de usuario */}
           <Route exact path="/login" element={<Login />} />

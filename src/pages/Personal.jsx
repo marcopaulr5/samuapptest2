@@ -11,6 +11,7 @@ function Personal() {
   const [colegiatura, setColegiatura] = useState("");
   const [dni, setDni] = useState("");
   const [telefono, setTelefono] = useState("");
+
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
 
@@ -64,6 +65,7 @@ function Personal() {
           />
         </label>
         <br />
+
         <label className="block text-sm font-medium text-gray-700"> 
           Apellidos:
           <input type="text" onChange={(e) => setApellidos(e.target.value)} 

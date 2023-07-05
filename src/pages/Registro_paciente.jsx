@@ -1,326 +1,267 @@
 import Layout from "../components/Layout";
-import axios from 'axios';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
-function Registro_paciente() {
+const RegistroPacienteForm = () => {
+  const initialValues = {
+    nombres: '',
+    apellidos: '',
+    genero: '',
+    dni: '',
+    tipo_seguro: '',
+    empresa_aseguradora: '',
+    edad: '',
+    tipo_edad: '',
+    prioridad_emergencia: '',
+    accidente: '',
+    condicion_antes: '',
+    condicion_despues: '',
+    telefono_paciente: '',
+  };
 
-  const [nombres, setNombres] = useState("");
-  const [apellidos, setApellidos] = useState("");
-  const [colegiatura, setColegiatura] = useState("");
-  const [dni, setDni] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [open, setOpen] = useState(false);
-  const [error, setError] = useState("");
-  // Función para manejar el envío del formulario
-const handleSubmit = (event) => {
-  event.preventDefault();
+  const validationSchema = Yup.object().shape({
+    nombres: Yup.string().required('Este campo es requerido'),
+    apellidos: Yup.string().required('Este campo es requerido'),
+    genero: Yup.string().required('Este campo es requerido'),
+    dni: Yup.string().required('Este campo es requerido'),
+    edad: Yup.number().required('Este campo es requerido').positive().integer(),
+    tipo_edad: Yup.string().required('Este campo es requerido'),
+    telefono_paciente: Yup.string().required('Este campo es requerido'),
+  });
 
-  // Obtener los valores de los campos del formulario
-const formData = new FormData(event.target);
-
-  // Realizar la solicitud POST a la API de Django
-axios.post('http://localhost:8000/api/paciente/', formData)
-    .then((response) => {
-      // Manejar la respuesta exitosa
-      console.log(response.data);
-    })
-    .catch((error) => {
-      // Manejar el error
-      console.error(error);
-    });
-}
+  const handleSubmit = (values) => {
+    console.log(values);
+  };
 
   return (
     <Layout>
-    <div className="flex items-center justify-center pt-32 ">
-      <form className="space-y-8 divide-y divide-gray-200" onSubmit={handleSubmit}>
-        <div className="space-y-8 divide-y divide-gray-200">
-          {/* Aqui empieza el formulario */}
-          <div className="pt-8">
-            <div>
-              <h3 className="text-lg font-medium leading-6 text-gray-900">
-                Informacion Personal
-              </h3>
-              <p className="mt-1 text-sm text-gray-500">
-                Porfavor complete los siguientes campos del formulario:
-              </p>
-            </div>
-            <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="first-name"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Nombres
-                </label>
-                <div className="mt-1">
-                  <input
+    <div className="flex items-center justify-center pt-32">
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        <Form className="space-y-8 divide-y divide-gray-200">
+          <div className="space-y-8 divide-y divide-gray-200">
+            <div className="pt-8">
+              <div>
+                <h3 className="text-lg font-medium leading-6 text-gray-900">
+                  Registro de Datos del Paciente
+                </h3>
+              </div>
+              <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                {/* Nombres del Paciente */}
+                <div className="sm:col-span-3">
+                  <label htmlFor="nombres" className="block text-sm font-medium text-gray-700">
+                    Nombres
+                  </label>
+                  <Field
                     type="text"
-                    name="first-name"
-                    id="first-name"
-                    autoComplete="given-name"
+                    id="nombres"
+                    name="nombres"
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
+                  <ErrorMessage name="nombres" component="div" className="text-red-500" />
                 </div>
-              </div>
 
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="last-name"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Apellidos
-                </label>
-                <div className="mt-1">
-                  <input
+                {/* Apellidos del Paciente */}
+                <div className="sm:col-span-3">
+                  <label htmlFor="apellidos" className="block text-sm font-medium text-gray-700">
+                    Apellidos
+                  </label>
+                  <Field
                     type="text"
-                    name="last-name"
-                    id="last-name"
-                    autoComplete="family-name"
+                    id="apellidos"
+                    name="apellidos"
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
+                  <ErrorMessage name="apellidos" component="div" className="text-red-500" />
                 </div>
-              </div>
 
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Sexo
-                </label>
-                <div className="mt-1">
-                  <select
-                    id="country"
-                    name="country"
-                    autoComplete="country-name"
+                {/* Género del Paciente */}
+                <div className="sm:col-span-3">
+                  <label htmlFor="genero" className="block text-sm font-medium text-gray-700">
+                    Género
+                  </label>
+                  <Field
+                    as="select"
+                    id="genero"
+                    name="genero"
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   >
-                    <option>Masculino</option>
-                    <option>Femenino</option>
-                    <option>No option</option>
-                  </select>
+                    <option value="">Seleccione</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="No especificado">No especificado</option>
+                  </Field>
+                  <ErrorMessage name="genero" component="div" className="text-red-500" />
                 </div>
-              </div>
 
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  N° Documento de Identidad
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  />
-                </div>
-              </div>
-
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Tipo de Seguro
-                </label>
-                <div className="mt-1">
-                  <select
-                    id="country"
-                    name="country"
-                    autoComplete="country-name"
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  >
-                    <option>SIS</option>
-                    <option>ESSALUD</option>
-                    <option>Privado</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Edad
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  />
-                </div>
-              </div>
-
-              
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Prioridad de Emergencia
-                </label>
-                <div className="mt-1">
-                  <select
-                    id="country"
-                    name="country"
-                    autoComplete="country-name"
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  >
-                    <option>BAJO</option>
-                    <option>MEDIO</option>
-                    <option>ALTO</option>
-                  </select>
-                </div>
-              </div>
-
-              
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Tipo de Accidente
-                </label>
-                <div className="mt-1">
-                  <select
-                    id="country"
-                    name="country"
-                    autoComplete="country-name"
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  >
-                    <option>Incendio</option>
-                    <option>Accidente Mobil</option>
-                    <option>Enfermedad</option>
-                  </select>
-                </div>
-              </div>
-
-
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Direccion
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  />
-                </div>
-              </div>
-
-              <div className="sm:col-span-4">
-              <label htmlFor="comment" className="block text-sm font-medium text-gray-700">
-                   Condicion Antes.. 
-              </label>
-              <div className="mt-1">
-              <textarea
-               rows={4}
-               name="comment"
-               id="comment"
-               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-               defaultValue={''}
-               />
-              </div>
-              </div>
-
-              <div className="sm:col-span-4">
-              <label htmlFor="comment" className="block text-sm font-medium text-gray-700">
-                   Condicion Ahora.. 
-              </label>
-              <div className="mt-1">
-              <textarea
-               rows={4}
-               name="comment"
-               id="comment"
-               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-               defaultValue={''}
-               />
-              </div>
-              </div>
-           
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Tipo de Edad
-                </label>
-                <div className="mt-1">
-                  <select
-                    id="country"
-                    name="country"
-                    autoComplete="country-name"
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  >
-                    <option>0-5</option>
-                    <option>6-12</option>
-                    <option>13-17</option>
-                    <option>18-24</option>
-                    <option>25-30</option>
-                    <option>31-45</option>
-                    <option>46-55</option>
-                    <option>56-65</option>
-                    <option>66-120</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="street-address"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Telefono Paciente
-                </label>
-                <div className="mt-1">
-                  <input
+                {/* DNI del Paciente */}
+                <div className="sm:col-span-3">
+                  <label htmlFor="dni" className="block text-sm font-medium text-gray-700">
+                    DNI
+                  </label>
+                  <Field
                     type="text"
-                    name="street-address"
-                    id="street-address"
-                    autoComplete="street-address"
+                    id="dni"
+                    name="dni"
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                  <ErrorMessage name="dni" component="div" className="text-red-500" />
+                </div>
+
+                {/* Tipo de Seguro */}
+                <div className="sm:col-span-3">
+                  <label htmlFor="tipo_seguro" className="block text-sm font-medium text-gray-700">
+                    Tipo de Seguro
+                  </label>
+                  <Field
+                    type="text"
+                    id="tipo_seguro"
+                    name="tipo_seguro"
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
-              </div>            
-            
+
+                {/* Empresa Aseguradora */}
+                <div className="sm:col-span-3">
+                  <label
+                    htmlFor="empresa_aseguradora"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Empresa Aseguradora
+                  </label>
+                  <Field
+                    type="text"
+                    id="empresa_aseguradora"
+                    name="empresa_aseguradora"
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+
+                {/* Edad del Paciente */}
+                <div className="sm:col-span-3">
+                  <label htmlFor="edad" className="block text-sm font-medium text-gray-700">
+                    Edad
+                  </label>
+                  <Field
+                    type="number"
+                    id="edad"
+                    name="edad"
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                  <ErrorMessage name="edad" component="div" className="text-red-500" />
+                </div>
+
+                {/* Tipo de Edad */}
+                <div className="sm:col-span-3">
+                  <label htmlFor="tipo_edad" className="block text-sm font-medium text-gray-700">
+                    Tipo de Edad
+                  </label>
+                  <Field
+                    as="select"
+                    id="tipo_edad"
+                    name="tipo_edad"
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  >
+                    <option value="">Seleccione</option>
+                    <option value="Años">Años</option>
+                    <option value="Meses">Meses</option>
+                    <option value="Días">Días</option>
+                  </Field>
+                  <ErrorMessage name="tipo_edad" component="div" className="text-red-500" />
+                </div>
+
+                {/* Prioridad de Emergencia */}
+                <div className="sm:col-span-3">
+                  <label
+                    htmlFor="prioridad_emergencia"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Prioridad de Emergencia
+                  </label>
+                  <Field
+                    type="text"
+                    id="prioridad_emergencia"
+                    name="prioridad_emergencia"
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+
+                {/* Accidente */}
+                <div className="sm:col-span-3">
+                  <label htmlFor="accidente" className="block text-sm font-medium text-gray-700">
+                    Accidente
+                  </label>
+                  <Field
+                    type="text"
+                    id="accidente"
+                    name="accidente"
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+
+                {/* Condición Antes */}
+                <div className="sm:col-span-3">
+                  <label htmlFor="condicion_antes" className="block text-sm font-medium text-gray-700">
+                    Condición Antes
+                  </label>
+                  <Field
+                    as="textarea"
+                    id="condicion_antes"
+                    name="condicion_antes"
+                    rows={3}
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+
+                {/* Condición Después */}
+                <div className="sm:col-span-3">
+                  <label htmlFor="condicion_despues" className="block text-sm font-medium text-gray-700">
+                    Condición Después
+                  </label>
+                  <Field
+                    as="textarea"
+                    id="condicion_despues"
+                    name="condicion_despues"
+                    rows={3}
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+
+                {/* Teléfono del Paciente */}
+                <div className="sm:col-span-3">
+                  <label htmlFor="telefono_paciente" className="block text-sm font-medium text-gray-700">
+                    Teléfono del Paciente
+                  </label>
+                  <Field
+                    type="text"
+                    id="telefono_paciente"
+                    name="telefono_paciente"
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                  <ErrorMessage name="telefono_paciente" component="div" className="text-red-500" />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="pt-5">
-          <div className="flex justify-end">
-            <button
-              type="button"
-              className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Save
-            </button>
+          <div className="pt-5">
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Guardar
+              </button>
+            </div>
           </div>
-        </div>
-        <div> </div>
-      </form>
+        </Form>
+      </Formik>
     </div>
     </Layout>
   );
-}
-export default Registro_paciente;
+};
+
+export default RegistroPacienteForm;

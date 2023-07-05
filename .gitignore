@@ -272,7 +272,7 @@ front/.env
 
 
 env/
-front/node_modules/
+node_modules/
 static/
 build/
 

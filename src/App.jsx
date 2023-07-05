@@ -16,6 +16,9 @@ import Login_registro from "./pages/Auth/Login_registro";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import ResetPasswordConfirm from "./pages/Auth/ResetPasswordConfirm";
 import Registro_personal  from "./pages/Registro_personal";
+import MedicosForm from "./pages/Registro_Medicos";
+import RegistroUbicacionForm from "./pages/Registro_Ubicacion";
+import RegistroLlamadaForm from "./pages/Registro_informantes";
 
 //theme
 import "primereact/resources/themes/lara-light-indigo/theme.css";     
@@ -38,6 +41,9 @@ function App() {
           <Route path="/documentos" element={<Documentos />} />
           <Route path="/comentarios" element={<Comentarios />}/>
           <Route path="/registro_personal" element={<Registro_personal />}/>
+          <Route path="/registro_medicos" element={<MedicosForm />}/>
+          <Route path="/registro_ubicacion" element={<RegistroUbicacionForm />}/>
+          <Route path="/registro_llamada" element={<RegistroLlamadaForm />}/>
           <Route path="/comentarios" element={<Comentarios />} />
           {/* Display de Autenticacion de usuario */}
           <Route exact path="/login" element={<Login />} />

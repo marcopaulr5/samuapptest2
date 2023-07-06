@@ -1,4 +1,3 @@
-
 import { Provider } from "react-redux";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import store from "./store";
@@ -20,12 +19,14 @@ import Registro_personal  from "./pages/Registro_personal";
 import MedicosForm from "./pages/Registro_Medicos";
 import RegistroUbicacionForm from "./pages/Registro_Ubicacion";
 import RegistroLlamadaForm from "./pages/Registro_informantes";
+import RegistroDiagnosticoForm from "./pages/Registro_diagnostico";
 
 //theme
 import "primereact/resources/themes/lara-light-indigo/theme.css";     
     
 //core
 import "primereact/resources/primereact.min.css";  
+import FeedbackForm from "./pages/Registro_feedback";
 
 
 function App() {
@@ -47,6 +48,9 @@ function App() {
           <Route path="/registro_medicos" element={<MedicosForm />}/>
           <Route path="/registro_ubicacion" element={<RegistroUbicacionForm />}/>
           <Route path="/registro_llamada" element={<RegistroLlamadaForm />}/>
+          <Route path="/registro_diagnostico" element={<RegistroDiagnosticoForm />}/>
+          <Route path="/feedback" element={<FeedbackForm />}/>
+          
           <Route path="/comentarios" element={<Comentarios />} />
           {/* Display de Autenticacion de usuario */}
           <Route exact path="/login" element={<Login />} />

@@ -31,8 +31,8 @@ const RegistroLlamadaForm = () => {
         .matches(/^[a-zA-Z\s]*$/, "Ingrese los nombres sin ningun caracter")
         .required('Campo requerido'),
         apellidos_infor: Yup.string()
-        .matches(/^[a-zA-Z\s]*$/, "Ingrese los nombres sin ningun caracter")
-        .required('Campo requerido'),
+        .matches(/^[a-zA-Z\s]*$/, "Ingrese solo letras")
+        .notRequired(),
         gen_infor: Yup.string().required('Campo requerido'),
         dni_infor: Yup.string()
         .required("Ingrese el DNI")
@@ -234,8 +234,10 @@ const RegistroLlamadaForm = () => {
               {/* Apellidos del Informante */}
               <div className="sm:col-span-3">
                 <label htmlFor="apellidos_infor" className="block text-sm font-medium text-gray-700">
-                  Apellidos del Informante
+                  Apellidos del Informante 
+                  <span className='text-red-500'> *</span>
                 </label>
+
                 <div className="mt-1">
                   <input
                     type="text"

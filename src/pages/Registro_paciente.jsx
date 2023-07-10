@@ -169,9 +169,23 @@ const RegistroPacienteForm = () => {
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   >
                     <option value="">Seleccione</option>
-                    <option value="Años">Años</option>
-                    <option value="Meses">Meses</option>
-                    <option value="Días">Días</option>
+                    <option value="Meses">0-4</option>
+                    <option value="Años">5-9</option>
+                    <option value="Años">10-14</option>
+                    <option value="Años">15-19</option>
+                    <option value="Años">20-24</option>
+                    <option value="Años">25-29</option>
+                    <option value="Años">30-34</option>
+                    <option value="Años">35-39</option>
+                    <option value="Años">40-44</option>
+                    <option value="Años">45-49</option>
+                    <option value="Años">50-54</option>
+                    <option value="Años">55-59</option>
+                    <option value="Años">60-64</option>
+                    <option value="Años">65-69</option>
+                    <option value="Años">70-74</option>
+                    <option value="Años">75-79</option>
+                    <option value="Años">80+</option>
                   </Field>
                   <ErrorMessage name="tipo_edad" component="div" className="text-red-500" />
                 </div>

@@ -20,6 +20,7 @@ import MedicosForm from "./pages/Registro_Medicos";
 import RegistroUbicacionForm from "./pages/Registro_Ubicacion";
 import RegistroLlamadaForm from "./pages/Registro_informantes";
 import RegistroDiagnosticoForm from "./pages/Registro_diagnostico";
+import AtencionForm from "./pages/Registro_atencion";
 
 //theme
 import "primereact/resources/themes/lara-light-indigo/theme.css";     
@@ -50,8 +51,8 @@ function App() {
           <Route path="/registro_llamada" element={<RegistroLlamadaForm />}/>
           <Route path="/registro_diagnostico" element={<RegistroDiagnosticoForm />}/>
           <Route path="/feedback" element={<FeedbackForm />}/>
-          
           <Route path="/comentarios" element={<Comentarios />} />
+          <Route path="/registro_atencion" element={<AtencionForm  />}/>
           {/* Display de Autenticacion de usuario */}
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/login_registro" element={<Login_registro />} />

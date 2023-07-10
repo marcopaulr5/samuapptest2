@@ -23,10 +23,14 @@ const RegistroPacienteForm = () => {
     nombres: Yup.string().required('Este campo es requerido'),
     apellidos: Yup.string().required('Este campo es requerido'),
     genero: Yup.string().required('Este campo es requerido'),
-    dni: Yup.string().required('Este campo es requerido'),
+    dni: Yup.string()
+    .required("Ingrese el DNI")
+    .matches(/^[0-9]{8}$/, "El DNI debe tener 8 dígitos"),
     edad: Yup.number().required('Este campo es requerido').positive().integer(),
     tipo_edad: Yup.string().required('Este campo es requerido'),
-    telefono_paciente: Yup.string().required('Este campo es requerido'),
+    telefono_paciente: Yup.string()
+    .matches(/^[0-9]{8}$/, "El DNI debe tener 8 dígitos")
+    .required('Este campo es requerido'),
   });
 
     // Función para manejar el envío del formulario
@@ -169,23 +173,23 @@ const RegistroPacienteForm = () => {
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   >
                     <option value="">Seleccione</option>
-                    <option value="Meses">0-4</option>
-                    <option value="Años">5-9</option>
-                    <option value="Años">10-14</option>
-                    <option value="Años">15-19</option>
-                    <option value="Años">20-24</option>
-                    <option value="Años">25-29</option>
-                    <option value="Años">30-34</option>
-                    <option value="Años">35-39</option>
-                    <option value="Años">40-44</option>
-                    <option value="Años">45-49</option>
-                    <option value="Años">50-54</option>
-                    <option value="Años">55-59</option>
-                    <option value="Años">60-64</option>
-                    <option value="Años">65-69</option>
-                    <option value="Años">70-74</option>
-                    <option value="Años">75-79</option>
-                    <option value="Años">80+</option>
+                    <option value="0-4">0-4</option>
+                    <option value="5-9">5-9</option>
+                    <option value="10-14">10-14</option>
+                    <option value="15-19">15-19</option>
+                    <option value="20-24">20-24</option>
+                    <option value="25-29">25-29</option>
+                    <option value="30-34">30-34</option>
+                    <option value="35-39">35-39</option>
+                    <option value="40-44">40-44</option>
+                    <option value="45-49">45-49</option>
+                    <option value="50-54">50-54</option>
+                    <option value="55-59">55-59</option>
+                    <option value="60-64">60-64</option>
+                    <option value="65-69">65-69</option>
+                    <option value="70-74">70-74</option>
+                    <option value="75-79">75-79</option>
+                    <option value="80+">80+</option>
                   </Field>
                   <ErrorMessage name="tipo_edad" component="div" className="text-red-500" />
                 </div>

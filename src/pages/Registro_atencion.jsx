@@ -394,6 +394,9 @@ const AtencionForm = () => {
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       >
                         <option value="">Seleccionar...</option>
+                        <option value="0">jaime</option>
+                        <option value="1">gonzalo</option>
+                        <option value="2">Alff</option>
                         {/* Aquí debes generar las opciones con los valores correspondientes */}
                       </select>
                       {formik.touched.id_personal && formik.errors.id_personal && (
@@ -417,6 +420,9 @@ const AtencionForm = () => {
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       >
                         <option value="">Seleccionar...</option>
+                        <option value="0">jaime</option>
+                        <option value="1">gonzalo</option>
+                        <option value="2">Alff</option>
                         {/* Aquí debes generar las opciones con los valores correspondientes */}
                       </select>
                       {formik.touched.id_medico && formik.errors.id_medico && (
@@ -440,6 +446,9 @@ const AtencionForm = () => {
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       >
                         <option value="">Seleccionar...</option>
+                        <option value="0">GH-4</option>
+                        <option value="1">KJ-2</option>
+                        <option value="2">GY-2</option>
                         {/* Aquí debes generar las opciones con los valores correspondientes */}
                       </select>
                       {formik.touched.id_diagnostico && formik.errors.id_diagnostico && (
@@ -463,6 +472,9 @@ const AtencionForm = () => {
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       >
                         <option value="">Seleccionar...</option>
+                        <option value="0">jaime</option>
+                        <option value="1">gonzalo</option>
+                        <option value="2">Alff</option>
                         {/* Aquí debes generar las opciones con los valores correspondientes */}
                       </select>
                       {formik.touched.id_paciente && formik.errors.id_paciente && (
@@ -486,6 +498,9 @@ const AtencionForm = () => {
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     >
                       <option value="">Seleccionar...</option>
+                      <option value="0">jaime</option>
+                      <option value="1">gonzalo</option>
+                      <option value="2">Alff</option>
                     {/* Aquí debes generar las opciones con los valores correspondientes */}
                     </select>
                     {formik.touched.id_informante_atencion && formik.errors.id_informante_atencion && (

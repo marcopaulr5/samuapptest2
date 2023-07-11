@@ -1,6 +1,8 @@
+import React from 'react';
 import Layout from "../components/Layout";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import { useEffect, useState } from 'react';
 
 const RegistroPacienteForm = () => {
   const initialValues = {
@@ -20,17 +22,26 @@ const RegistroPacienteForm = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    nombres: Yup.string().required('Este campo es requerido'),
-    apellidos: Yup.string().required('Este campo es requerido'),
+    nombres: Yup.string()
+    .matches(/^[a-zA-Z\s]*$/, "Ingrese los nombres sin ningun caracter")
+    .required('Este campo es requerido'),
+    apellidos: Yup.string()
+    .matches(/^[a-zA-Z\s]*$/, "Ingrese los nombres sin ningun caracter")
+    .required('Este campo es requerido'),
     genero: Yup.string().required('Este campo es requerido'),
     dni: Yup.string()
     .required("Ingrese el DNI")
     .matches(/^[0-9]{8}$/, "El DNI debe tener 8 dígitos"),
-    edad: Yup.number().required('Este campo es requerido').positive().integer(),
+    edad: Yup.number()
+    .required('Este campo es requerido')
+    .positive()
+    .integer(),
     tipo_edad: Yup.string().required('Este campo es requerido'),
     telefono_paciente: Yup.string()
     .matches(/^[0-9]{8}$/, "El DNI debe tener 8 dígitos")
     .required('Este campo es requerido'),
+    tipo_seguro: Yup.string()
+    .required('Este campo es requerido')
   });
 
     // Función para manejar el envío del formulario
@@ -40,15 +51,16 @@ const RegistroPacienteForm = () => {
     console.log(values);
   }
 
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: handleSubmit,
+  });
+
   return (
     <Layout>
-    <div className="flex items-center justify-center pt-32">
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        <Form className="space-y-8 divide-y divide-gray-200">
+      <div className="flex items-center justify-center pt-32">
+        <form className="space-y-8 divide-y divide-gray-200" onSubmit={formik.handleSubmit}>
           <div className="space-y-8 divide-y divide-gray-200">
             <div className="pt-8">
               <div>
@@ -57,18 +69,25 @@ const RegistroPacienteForm = () => {
                 </h3>
               </div>
               <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+
+
                 {/* Nombres del Paciente */}
                 <div className="sm:col-span-3">
                   <label htmlFor="nombres" className="block text-sm font-medium text-gray-700">
                     Nombres
                   </label>
-                  <Field
+                  <input
                     type="text"
                     id="nombres"
                     name="nombres"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.nombres}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
-                  <ErrorMessage name="nombres" component="div" className="text-red-500" />
+                   {formik.touched.nombres && formik.errors.nombres && (
+                      <div className="text-red-500">{formik.errors.nombres}</div>
+                    )}
                 </div>
 
                 {/* Apellidos del Paciente */}
@@ -76,13 +95,18 @@ const RegistroPacienteForm = () => {
                   <label htmlFor="apellidos" className="block text-sm font-medium text-gray-700">
                     Apellidos
                   </label>
-                  <Field
+                  <input
                     type="text"
                     id="apellidos"
                     name="apellidos"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.apellidos}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
-                  <ErrorMessage name="apellidos" component="div" className="text-red-500" />
+                  {formik.touched.apellidos && formik.errors.apellidos && (
+                      <div className="text-red-500">{formik.errors.apellidos}</div>
+                    )}
                 </div>
 
                 {/* Género del Paciente */}
@@ -90,18 +114,25 @@ const RegistroPacienteForm = () => {
                   <label htmlFor="genero" className="block text-sm font-medium text-gray-700">
                     Género
                   </label>
-                  <Field
+                  <div className="mt-1">
+                  <select
                     as="select"
                     id="genero"
                     name="genero"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.genero}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   >
                     <option value="">Seleccione</option>
                     <option value="Masculino">Masculino</option>
                     <option value="Femenino">Femenino</option>
                     <option value="No especificado">No especificado</option>
-                  </Field>
-                  <ErrorMessage name="genero" component="div" className="text-red-500" />
+                  </select>
+                  {formik.touched.genero && formik.errors.genero && (
+                      <div className="text-red-500">{formik.errors.genero}</div>
+                    )}
+                    </div>
                 </div>
 
                 {/* DNI del Paciente */}
@@ -109,27 +140,43 @@ const RegistroPacienteForm = () => {
                   <label htmlFor="dni" className="block text-sm font-medium text-gray-700">
                     DNI
                   </label>
-                  <Field
+                  <input
                     type="text"
                     id="dni"
                     name="dni"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.dni}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
-                  <ErrorMessage name="dni" component="div" className="text-red-500" />
+                  {formik.touched.dni && formik.errors.dni && (
+                      <div className="text-red-500">{formik.errors.dni}</div>
+                    )}
                 </div>
 
                 {/* Tipo de Seguro */}
                 <div className="sm:col-span-3">
-                  <label htmlFor="tipo_seguro" className="block text-sm font-medium text-gray-700">
-                    Tipo de Seguro
-                  </label>
-                  <Field
-                    type="text"
+                <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+                  Tipo de Seguro
+                </label>
+                <div className="mt-1">
+                  <select
                     id="tipo_seguro"
                     name="tipo_seguro"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.tipo_seguro}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  />
+                  >
+                    <option value="">Seleccione</option>
+                    <option value="SIS">SIS</option>
+                    <option value="ESSALUD">ESSALUD</option>
+                    <option value="OTROS">OTRO</option>
+                    <option value="NO_TIENE">NO_TIENE</option>
+                  </select>
+                  {formik.touched.tipo_seguro && formik.errors.tipo_seguro && <div className="text-red-500">{formik.errors.tipo_seguro}</div>}
                 </div>
+              </div>
 
                 {/* Empresa Aseguradora */}
                 <div className="sm:col-span-3">
@@ -139,7 +186,7 @@ const RegistroPacienteForm = () => {
                   >
                     Empresa Aseguradora
                   </label>
-                  <Field
+                  <input
                     type="text"
                     id="empresa_aseguradora"
                     name="empresa_aseguradora"
@@ -152,13 +199,18 @@ const RegistroPacienteForm = () => {
                   <label htmlFor="edad" className="block text-sm font-medium text-gray-700">
                     Edad
                   </label>
-                  <Field
+                  <input
                     type="number"
                     id="edad"
                     name="edad"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.edad}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
-                  <ErrorMessage name="edad" component="div" className="text-red-500" />
+                  {formik.touched.edad && formik.errors.edad && (
+                      <div className="text-red-500">{formik.errors.edad}</div>
+                    )}
                 </div>
 
                 {/* Tipo de Edad */}
@@ -166,7 +218,7 @@ const RegistroPacienteForm = () => {
                   <label htmlFor="tipo_edad" className="block text-sm font-medium text-gray-700">
                     Tipo de Edad
                   </label>
-                  <Field
+                  <select
                     as="select"
                     id="tipo_edad"
                     name="tipo_edad"
@@ -190,8 +242,10 @@ const RegistroPacienteForm = () => {
                     <option value="70-74">70-74</option>
                     <option value="75-79">75-79</option>
                     <option value="80+">80+</option>
-                  </Field>
-                  <ErrorMessage name="tipo_edad" component="div" className="text-red-500" />
+                  </select>
+                  {formik.touched.tipo_edad && formik.errors.tipo_edad && (
+                      <div className="text-red-500">{formik.errors.tipo_edad}</div>
+                    )}
                 </div>
 
                 {/* Prioridad de Emergencia */}
@@ -202,7 +256,7 @@ const RegistroPacienteForm = () => {
                   >
                     Prioridad de Emergencia
                   </label>
-                  <Field
+                  <input
                     type="text"
                     id="prioridad_emergencia"
                     name="prioridad_emergencia"
@@ -215,7 +269,7 @@ const RegistroPacienteForm = () => {
                   <label htmlFor="accidente" className="block text-sm font-medium text-gray-700">
                     Accidente
                   </label>
-                  <Field
+                  <input
                     type="text"
                     id="accidente"
                     name="accidente"
@@ -228,7 +282,7 @@ const RegistroPacienteForm = () => {
                   <label htmlFor="condicion_antes" className="block text-sm font-medium text-gray-700">
                     Condición Antes
                   </label>
-                  <Field
+                  <input
                     as="textarea"
                     id="condicion_antes"
                     name="condicion_antes"
@@ -242,7 +296,7 @@ const RegistroPacienteForm = () => {
                   <label htmlFor="condicion_despues" className="block text-sm font-medium text-gray-700">
                     Condición Después
                   </label>
-                  <Field
+                  <input
                     as="textarea"
                     id="condicion_despues"
                     name="condicion_despues"
@@ -256,13 +310,13 @@ const RegistroPacienteForm = () => {
                   <label htmlFor="telefono_paciente" className="block text-sm font-medium text-gray-700">
                     Teléfono del Paciente
                   </label>
-                  <Field
+                  <input
                     type="text"
                     id="telefono_paciente"
                     name="telefono_paciente"
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
-                  <ErrorMessage name="telefono_paciente" component="div" className="text-red-500" />
+  
                 </div>
               </div>
             </div>
@@ -278,8 +332,7 @@ const RegistroPacienteForm = () => {
               </button>
             </div>
           </div>
-        </Form>
-      </Formik>
+        </form>
     </div>
     </Layout>
   );

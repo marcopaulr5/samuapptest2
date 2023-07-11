@@ -45,7 +45,7 @@ const AtencionForm = () => {
     id_diagnostico: Yup.string().required('Campo requerido'),
     id_paciente: Yup.string().required('Campo requerido'),
     id_informante_atencion: Yup.string().required('Campo requerido'),
-  });
+  })
 
   const handleSubmit = (values) => {
     // Aquí puedes agregar la lógica para enviar los datos del formulario
@@ -76,15 +76,21 @@ const AtencionForm = () => {
                     Tipo de Emergencia
                   </label>
                   <div className="mt-1">
-                    <input
-                      type="text"
-                      id="tipo_emergencia"
-                      name="tipo_emergencia"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.tipo_emergencia}
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
+                  <select
+                    as="select"
+                    id="tipo_emergencia"
+                    name="tipo_emergencia"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.tipo_emergencia}
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  >
+                    <option value="">Seleccione</option>
+                    <option value="Individual">Individual</option>
+                    <option value="Masivo">Masivo</option>
+                    <option value="No especificado">No especificado</option>
+                  </select>
+
                     {formik.touched.tipo_emergencia && formik.errors.tipo_emergencia && (
                       <div className="text-red-500">{formik.errors.tipo_emergencia}</div>
                     )}
@@ -97,15 +103,23 @@ const AtencionForm = () => {
                     Tipo de Atención
                   </label>
                   <div className="mt-1">
-                    <input
-                      type="text"
-                      id="tipo_atencion"
-                      name="tipo_atencion"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.tipo_atencion}
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
+                  <select
+                    as="tipo_atencion"
+                    id="tipo_atencion"
+                    name="tipo_atencion"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.tipo_atencion}
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  >
+                    <option value="">Seleccione</option>
+                    <option value="Requiere Traslado">En Foco</option>
+                    <option value="Consulta Telefonica">Consulta Medica Telefonica</option>
+                    <option value="Frustado">Frustado</option>
+                    <option value="Cancelado">Cancelado</option>
+                    <option value="Fallecido">Fallecido</option>
+                    <option value="No Especificado">No especificado</option>
+                  </select>
                     {formik.touched.tipo_atencion && formik.errors.tipo_atencion && (
                       <div className="text-red-500">{formik.errors.tipo_atencion}</div>
                     )}

@@ -2,7 +2,7 @@ import { Provider } from "react-redux";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import store from "./store";
 import Inicio from "./pages/Inicio";
-import Registro_paciente from "./pages/Registro_paciente";
+import RegistroPacienteForm from "./pages/Registro_paciente";
 import Personal from "./pages/Personal";
 import Reportes from "./pages/Reportes";
 import Calendario from "./pages/Calendario";
@@ -37,7 +37,7 @@ function App() {
         <Routes>
           {/* Display paginas principales */}
           <Route path="/" element={<Inicio />} />
-          <Route path="/registro_paciente" element={<Registro_paciente />} />
+          <Route path="/registro_paciente" element={<RegistroPacienteForm />} />
           <Route path="/personal" element={<Personal />} />
           <Route path="/reporte" element={<Reportes />} />
           <Route path="/calendario" element={<Calendario />} />

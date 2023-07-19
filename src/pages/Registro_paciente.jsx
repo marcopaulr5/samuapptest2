@@ -1,10 +1,11 @@
-import React from 'react';
-import Layout from "../components/Layout";
-import * as Yup from 'yup';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import { useEffect, useState } from 'react';
+import * as Yup from 'yup';
+import Layout from '../components/Layout';
+import { useEffect } from 'react';
 
 const RegistroPacienteForm = () => {
+
   const initialValues = {
     nombres: '',
     apellidos: '',
@@ -14,10 +15,6 @@ const RegistroPacienteForm = () => {
     empresa_aseguradora: '',
     edad: '',
     tipo_edad: '',
-    prioridad_emergencia: '',
-    accidente: '',
-    condicion_antes: '',
-    condicion_despues: '',
     telefono_paciente: '',
   };
 
@@ -35,20 +32,25 @@ const RegistroPacienteForm = () => {
     edad: Yup.number()
     .required('Este campo es requerido')
     .positive()
-    .integer(),
-    tipo_edad: Yup.string().required('Este campo es requerido'),
-    telefono_paciente: Yup.string()
-    .matches(/^[0-9]{8}$/, "El DNI debe tener 8 dígitos")
+    .integer('Solo ingresa numeros')
+    .max(150, 'La edad debe tener como máximo tres dígitos'),
+    tipo_edad: Yup.string()
     .required('Este campo es requerido'),
+    telefono_paciente: Yup.string()
+    .matches(/^[0-9]{9}$/, "El numero debe tener 9 dígitos")
+    .notRequired(),
     tipo_seguro: Yup.string()
-    .required('Este campo es requerido')
+    .required('Este campo es requerido'),
+    empresa_aseguradora: Yup.string()
+    .notRequired('Ingrese la empresa')
+    
+    
+
   });
 
-    // Función para manejar el envío del formulario
-  const handleSubmit = (values) => {
-    // Si la opción "Hora actual" está marcada, asignamos la hora actual al campo "hora"
-    // Aquí puedes agregar la lógica para enviar los datos del formulario
+  const handleSubmit = (values,  { resetForm }) => {
     console.log(values);
+    resetForm();
   }
 
   const formik = useFormik({
@@ -73,7 +75,9 @@ const RegistroPacienteForm = () => {
 
                 {/* Nombres del Paciente */}
                 <div className="sm:col-span-3">
-                  <label htmlFor="nombres" className="block text-sm font-medium text-gray-700">
+                  <label 
+                  htmlFor="nombres" 
+                  className="block text-sm font-medium text-gray-700">
                     Nombres
                   </label>
                   <input
@@ -156,43 +160,50 @@ const RegistroPacienteForm = () => {
 
                 {/* Tipo de Seguro */}
                 <div className="sm:col-span-3">
-                <label htmlFor="country" className="block text-sm font-medium text-gray-700">
-                  Tipo de Seguro
-                </label>
-                <div className="mt-1">
-                  <select
-                    id="tipo_seguro"
-                    name="tipo_seguro"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.tipo_seguro}
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  >
-                    <option value="">Seleccione</option>
-                    <option value="SIS">SIS</option>
-                    <option value="ESSALUD">ESSALUD</option>
-                    <option value="OTROS">OTRO</option>
-                    <option value="NO_TIENE">NO_TIENE</option>
-                  </select>
-                  {formik.touched.tipo_seguro && formik.errors.tipo_seguro && <div className="text-red-500">{formik.errors.tipo_seguro}</div>}
-                </div>
-              </div>
-
-                {/* Empresa Aseguradora */}
-                <div className="sm:col-span-3">
-                  <label
-                    htmlFor="empresa_aseguradora"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Empresa Aseguradora
+                  <label htmlFor="tipo_seguro" className="block text-sm font-medium text-gray-700">
+                    Tipo de Seguro
                   </label>
-                  <input
-                    type="text"
-                    id="empresa_aseguradora"
-                    name="empresa_aseguradora"
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  />
+                  <div className="mt-1">
+                    <select
+                      id="tipo_seguro"
+                      name="tipo_seguro"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.tipo_seguro}
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    >
+                      <option value="">Seleccione</option>
+                      <option value="SIS">SIS</option>
+                      <option value="ESSALUD">ESSALUD</option>
+                      <option value="OTROS">OTRO</option>
+                      <option value="NO_TIENE">NO_TIENE</option>
+                    </select>
+                    {formik.touched.tipo_seguro && formik.errors.tipo_seguro && (
+                      <div className="text-red-500">{formik.errors.tipo_seguro}</div>
+                    )}
+                  </div>
                 </div>
+
+                 {/* Empresa Aseguradora */}
+                 {formik.values.tipo_seguro === 'OTROS' && (
+                  <div className="sm:col-span-3">
+                    <label htmlFor="empresa_aseguradora" className="block text-sm font-medium text-gray-700">
+                      Empresa Aseguradora
+                    </label>
+                    <input
+                      type="text"
+                      id="empresa_aseguradora"
+                      name="empresa_aseguradora"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.empresa_aseguradora}
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    />
+                    {formik.touched.empresa_aseguradora && formik.errors.empresa_aseguradora && (
+                      <div className="text-red-500">{formik.errors.empresa_aseguradora}</div>
+                    )}
+                  </div>
+                )}
 
                 {/* Edad del Paciente */}
                 <div className="sm:col-span-3">
@@ -218,10 +229,14 @@ const RegistroPacienteForm = () => {
                   <label htmlFor="tipo_edad" className="block text-sm font-medium text-gray-700">
                     Tipo de Edad
                   </label>
+                  <div className="mt-1">
                   <select
                     as="select"
                     id="tipo_edad"
                     name="tipo_edad"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.tipo_edad}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   >
                     <option value="">Seleccione</option>
@@ -246,63 +261,7 @@ const RegistroPacienteForm = () => {
                   {formik.touched.tipo_edad && formik.errors.tipo_edad && (
                       <div className="text-red-500">{formik.errors.tipo_edad}</div>
                     )}
-                </div>
-
-                {/* Prioridad de Emergencia */}
-                <div className="sm:col-span-3">
-                  <label
-                    htmlFor="prioridad_emergencia"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Prioridad de Emergencia
-                  </label>
-                  <input
-                    type="text"
-                    id="prioridad_emergencia"
-                    name="prioridad_emergencia"
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  />
-                </div>
-
-                {/* Accidente */}
-                <div className="sm:col-span-3">
-                  <label htmlFor="accidente" className="block text-sm font-medium text-gray-700">
-                    Accidente
-                  </label>
-                  <input
-                    type="text"
-                    id="accidente"
-                    name="accidente"
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  />
-                </div>
-
-                {/* Condición Antes */}
-                <div className="sm:col-span-3">
-                  <label htmlFor="condicion_antes" className="block text-sm font-medium text-gray-700">
-                    Condición Antes
-                  </label>
-                  <input
-                    as="textarea"
-                    id="condicion_antes"
-                    name="condicion_antes"
-                    rows={3}
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  />
-                </div>
-
-                {/* Condición Después */}
-                <div className="sm:col-span-3">
-                  <label htmlFor="condicion_despues" className="block text-sm font-medium text-gray-700">
-                    Condición Después
-                  </label>
-                  <input
-                    as="textarea"
-                    id="condicion_despues"
-                    name="condicion_despues"
-                    rows={3}
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  />
+                    </div>
                 </div>
 
                 {/* Teléfono del Paciente */}
@@ -314,9 +273,14 @@ const RegistroPacienteForm = () => {
                     type="text"
                     id="telefono_paciente"
                     name="telefono_paciente"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.telefono_paciente}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
-  
+                  {formik.touched.telefono_paciente && formik.errors.telefono_paciente && (
+                                        <div className="text-red-500">{formik.errors.telefono_paciente}</div>
+                                      )}
                 </div>
               </div>
             </div>
